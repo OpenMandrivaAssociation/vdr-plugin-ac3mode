@@ -2,7 +2,7 @@
 %define plugin	ac3mode
 %define name	vdr-plugin-%plugin
 %define version	0.1
-%define rel	11
+%define rel	12
 
 Summary:	VDR plugin: Displays currently active AC3-Mode
 Name:		%name
