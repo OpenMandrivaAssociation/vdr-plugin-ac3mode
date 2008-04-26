@@ -2,7 +2,7 @@
 %define plugin	ac3mode
 %define name	vdr-plugin-%plugin
 %define version	0.1
-%define rel	16
+%define rel	17
 
 Summary:	VDR plugin: Displays currently active AC3-Mode
 Name:		%name
@@ -12,8 +12,9 @@ Group:		Video
 License:	GPL
 URL:		http://www.vdr-wiki.de/wiki/index.php/Ac3mode-plugin
 Source:		vdr-%plugin-%version.tar.bz2
+Patch0:		ac3mode-i18n-1.6.patch
 BuildRoot:	%{_tmppath}/%{name}-buildroot
-BuildRequires:	vdr-devel >= 1.4.1-6
+BuildRequires:	vdr-devel >= 1.6.0
 Requires:	vdr-abi = %vdr_abi
 
 %description
@@ -29,6 +30,8 @@ If no Dolby track is selected, "PCM Sound" will be displayed.
 
 %prep
 %setup -q -n %plugin
+%patch0 -p1
+%vdr_plugin_prep
 
 %build
 %vdr_plugin_build
