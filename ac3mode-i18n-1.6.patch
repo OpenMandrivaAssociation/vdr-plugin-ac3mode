@@ -1,0 +1,152 @@
+
+This is a semi-automatically created i18n adaptation patch and may contain
+errors (such as missing translations). This should only be used as a
+temporary measure until the upstream plugin maintainer fixes the plugin
+properly according to the instructions in i18n-to-gettext.pl.
+
+Created for Mandriva Linux packaging by Anssi Hannula <anssi@mandriva.org>.
+
+
+Index: ac3mode/Makefile
+===================================================================
+--- ac3mode/Makefile
++++ ac3mode/Makefile	2008-04-16 08:32:44.000000000 +0300
+@@ -62,9 +62,34 @@
+ 
+ -include $(DEPFILE)
+ 
++### Internationalization (I18N):
++
++PODIR     = po
++LOCALEDIR = $(VDRDIR)/locale
++I18Npo    = $(wildcard $(PODIR)/*.po)
++I18Nmsgs  = $(addprefix $(LOCALEDIR)/, $(addsuffix /LC_MESSAGES/vdr-$(PLUGIN).mo, $(notdir $(foreach file, $(I18Npo), $(basename $(file))))))
++I18Npot   = $(PODIR)/$(PLUGIN).pot
++
++%.mo: %.po
++	msgfmt -c -o $@ $<
++
++$(I18Npot): $(wildcard *.[ch]*)
++	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --msgid-bugs-address='<http://qa.mandriva.com/>' -o $@ $^
++
++%.po: $(I18Npot)
++	msgmerge -U --no-wrap --no-location --backup=none -q $@ $<
++	@touch $@
++
++$(I18Nmsgs): $(LOCALEDIR)/%/LC_MESSAGES/vdr-$(PLUGIN).mo: $(PODIR)/%.mo
++	@mkdir -p $(dir $@)
++	cp $< $@
++
++.PHONY: i18n
++i18n: $(I18Nmsgs)
++
+ ### Targets:
+ 
+-all: libvdr-$(PLUGIN).so
++all: libvdr-$(PLUGIN).so i18n
+ 
+ libvdr-$(PLUGIN).so: $(OBJS)
+ 	$(CXX) $(CXXFLAGS) -shared $(OBJS) -o $@
+@@ -79,4 +104,5 @@
+ 	@echo Distribution package created as $(PACKAGE).tgz
+ 
+ clean:
++	@-rm -f $(PODIR)/*.mo $(PODIR)/*.pot
+ 	@-rm -f $(OBJS) $(DEPFILE) *.so *.tgz core* *~
+Index: ac3mode/ac3mode.c
+===================================================================
+--- ac3mode/ac3mode.c
++++ ac3mode/ac3mode.c	2008-04-16 08:32:44.000000000 +0300
+@@ -10,7 +10,7 @@
+ #include "ac3audio.h"
+ #include "ac3modes.h"
+ #include "setup.h"
+-#include "i18n.h"
++
+ 
+ static const char *VERSION        = "0.1";
+ static const char *DESCRIPTION    = "Displays currently active AC3-Mode.";
+@@ -71,7 +71,7 @@
+ bool cPluginAc3mode::Initialize(void)
+ {
+   // register language codes
+-  RegisterI18n(Phrases);
++  
+ 
+   // Create Audio-Object, which will show AC3 mode. Object will self-register.
+   if (ac3Audio == NULL)
+Index: ac3mode/po/ac3mode.pot
+===================================================================
+--- ac3mode/po/ac3mode.pot
++++ ac3mode/po/ac3mode.pot	2008-04-16 08:32:44.000000000 +0300
+@@ -0,0 +1,33 @@
++# SOME DESCRIPTIVE TITLE.
++# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
++# This file is distributed under the same license as the PACKAGE package.
++# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
++#
++#, fuzzy
++msgid ""
++msgstr ""
++"Project-Id-Version: PACKAGE VERSION\n"
++"Report-Msgid-Bugs-To: http://qa.mandriva.com/\n"
++"POT-Creation-Date: 2008-04-16 08:32+0300\n"
++"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
++"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
++"Language-Team: LANGUAGE <LL@li.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=CHARSET\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ac3mode.c:49
++msgid "AC3 Mode"
++msgstr ""
++
++#: setup.c:15
++msgid "Settings will be applied on VDR restart"
++msgstr ""
++
++#: setup.c:25
++msgid "Notify on AC3 Mode Change"
++msgstr ""
++
++#: setup.c:26
++msgid "Display Main Menu entry"
++msgstr ""
+Index: ac3mode/po/de_DE.po
+===================================================================
+--- ac3mode/po/de_DE.po
++++ ac3mode/po/de_DE.po	2008-04-16 08:32:44.000000000 +0300
+@@ -0,0 +1,32 @@
++# VDR ac3mode plugin language source file.
++# Copyright (C) YEAR THE VDR-ac3mode'S COPYRIGHT HOLDER
++# This file is distributed under the same license as the VDR-ac3mode package.
++# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
++#
++msgid ""
++msgstr ""
++"Project-Id-Version: VDR-ac3mode\n"
++"Report-Msgid-Bugs-To: http://qa.mandriva.com/\n"
++"POT-Creation-Date: 2008-04-16 08:32+0300\n"
++"PO-Revision-Date: 2008-04-16 08:32+0300\n"
++"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
++"Language-Team: <vdr@linuxtv.org>\n"
++"MIME-Version: 1.0\n"
++"Content-Type: text/plain; charset=ISO-8859-15\n"
++"Content-Transfer-Encoding: 8bit\n"
++
++#: ac3mode.c:49
++msgid "AC3 Mode"
++msgstr "AC3 Modus"
++
++#: setup.c:15
++msgid "Settings will be applied on VDR restart"
++msgstr "Einstellungen werden bei Neustart uebernommen"
++
++#: setup.c:25
++msgid "Notify on AC3 Mode Change"
++msgstr "Info bei AC3-Modus AEnderung"
++
++#: setup.c:26
++msgid "Display Main Menu entry"
++msgstr "Hauptmenueeintrag anzeigen"
