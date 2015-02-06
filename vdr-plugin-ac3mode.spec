@@ -3,7 +3,7 @@
 Summary:	VDR plugin: Displays currently active AC3-Mode
 Name:		vdr-plugin-%plugin
 Version:	0.1
-Release:	22
+Release:	23
 Group:		Video
 License:	GPL
 URL:		http://www.vdr-wiki.de/wiki/index.php/Ac3mode-plugin
