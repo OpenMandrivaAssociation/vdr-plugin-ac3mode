@@ -6,7 +6,7 @@ Version:	0.1
 Release:	24
 Group:		Video
 License:	GPL
-URL:		http://www.vdr-wiki.de/wiki/index.php/Ac3mode-plugin
+URL:		https://www.vdr-wiki.de/wiki/index.php/Ac3mode-plugin
 Source:		vdr-%plugin-%version.tar.bz2
 Patch0:		ac3mode-i18n-1.6.patch
 BuildRequires:	vdr-devel >= 1.6.0
